@@ -404,6 +404,10 @@ int getNumGlobals() {
 String programName() {
     return mkString((char *)vmImg->infoHeader->name);
 }
+
+String programDescription() {
+    return programName();
+}
 #else
 int templateHash() {
     return ((int *)bytecode)[4];
@@ -419,6 +423,11 @@ int getNumGlobals() {
 
 String programName() {
     return ((String *)bytecode)[15];
+}
+
+String programDescription() {
+    // Bytecode headers currently do not expose dedicated description metadata.
+    return programName();
 }
 #endif
 

@@ -327,6 +327,8 @@ int programHash();
 //% expose
 BoxedString *programName();
 //% expose
+BoxedString *programDescription();
+//% expose
 unsigned programSize();
 //%
 int getNumGlobals();
