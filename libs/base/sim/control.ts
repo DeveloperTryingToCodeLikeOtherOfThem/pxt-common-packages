@@ -120,14 +120,19 @@ namespace pxsim.control {
     export function createBuffer(size: number) {
         return BufferMethods.createBuffer(size)
     }
+    
     export function dmesg(msg: string) {
         console.log(`DMESG: ${msg}`);
     }
     export function setDebugFlags(flags: number): void {
         console.log(`debug flags: ${flags}`);
     }
-    export function heapSnapshot(): void {
+    export function dumpHeapSnapshot(): void {
         console.log(runtime.traceObjects())
+    }
+
+    export function heapSnapshot(): void {
+        return runtime.traceObjects()
     }
 
     function toStr(v: any) {
