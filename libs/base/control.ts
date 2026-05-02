@@ -157,6 +157,9 @@ namespace control {
     //% shim=pxt::programName
     export declare function programName(): string;
 
+    //% shim=pxt::programDescription
+    export declare function programDescription(): string;
+
     //% shim=control::_ramSize
     function _ramSize() {
         return 32 * 1024 * 1024;

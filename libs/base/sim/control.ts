@@ -8,6 +8,71 @@ namespace pxsim.pxtcore {
         // TODO?
         console.log("deep sleep requested")
     }
+
+    function readProgramMetadata(key: string) {
+        const rt = (runtime as any);
+        const b = (board() as any);
+        const candidates = [
+            rt && rt[key],
+            rt && rt.options && rt.options[key],
+            rt && rt.currRunOpts && rt.currRunOpts[key],
+            b && b[key],
+            b && b.options && b.options[key]
+        ];
+
+        for (const value of candidates) {
+            if (typeof value === "string" && value.length) return value;
+        }
+
+        return "";
+    }
+
+    function readPxtJsonDescription() {
+        const rt = (runtime as any);
+        const b = (board() as any);
+        const containers = [
+            rt,
+            rt && rt.options,
+            rt && rt.currRunOpts,
+            b,
+            b && b.options
+        ];
+
+        for (const c of containers) {
+            if (!c) continue;
+            const fileCandidates = [
+                c["pxt.json"],
+                c.files && c.files["pxt.json"],
+                c.packageFiles && c.packageFiles["pxt.json"],
+                c.project && c.project["pxt.json"],
+                c.project && c.project.files && c.project.files["pxt.json"]
+            ];
+
+            for (const text of fileCandidates) {
+                if (typeof text !== "string" || !text) continue;
+                try {
+                    const parsed = JSON.parse(text);
+                    if (parsed && typeof parsed.description === "string" && parsed.description.length) {
+                        return parsed.description;
+                    }
+                } catch {
+                    // ignore malformed values
+                }
+            }
+        }
+
+        return "";
+    }
+
+    export function programDescription(): string {
+        return readPxtJsonDescription()
+            || readProgramMetadata("programDescription")
+            || readProgramMetadata("projectDescription")
+            || readProgramMetadata("description")
+            || readProgramMetadata("programName")
+            || readProgramMetadata("projectName")
+            || "";
+    }
 }
 
 namespace pxsim.BufferMethods {

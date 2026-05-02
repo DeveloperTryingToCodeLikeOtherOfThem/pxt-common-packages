@@ -10,6 +10,7 @@ control.runInParallel(() => {
 control.reset();
 control.waitMicros(4);
 control.deviceSerialNumber();
+control.programHash();
 ```
 
 ## Advanced #advanced
